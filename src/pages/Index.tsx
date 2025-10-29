@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import ModCard from '@/components/ModCard';
 import GameCard from '@/components/GameCard';
@@ -7,52 +6,79 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
-import { api, type Game, type Mod, type Achievement } from '@/lib/api';
 
 export default function Index() {
-  const [games, setGames] = useState<Game[]>([]);
-  const [mods, setMods] = useState<Mod[]>([]);
-  const [achievements, setAchievements] = useState<Achievement[]>([]);
-  const [loading, setLoading] = useState(true);
+  const featuredMods = [
+    {
+      title: "Enhanced Graphics Pack",
+      game: "Manhunt 2",
+      author: "DarkModder",
+      downloads: 15420,
+      rating: 4.8,
+      image: "https://cdn.poehali.dev/projects/771a388d-7f14-499e-8687-bc465eed70b9/files/f3031d53-4049-48b5-b7cb-1a2a1ad58edb.jpg",
+      category: "Графика"
+    },
+    {
+      title: "Realism Overhaul",
+      game: "Postal 2",
+      author: "RealistPro",
+      downloads: 8932,
+      rating: 4.5,
+      image: "https://cdn.poehali.dev/projects/771a388d-7f14-499e-8687-bc465eed70b9/files/3583e678-bfd7-4f5e-bfbd-1abc5010a1a8.jpg",
+      category: "Геймплей"
+    },
+    {
+      title: "New Weapons Pack",
+      game: "Manhunt 2",
+      author: "WeaponMaster",
+      downloads: 12341,
+      rating: 4.7,
+      image: "https://cdn.poehali.dev/projects/771a388d-7f14-499e-8687-bc465eed70b9/files/f3031d53-4049-48b5-b7cb-1a2a1ad58edb.jpg",
+      category: "Оружие"
+    },
+    {
+      title: "HD Textures",
+      game: "Postal 2",
+      author: "TexMaster",
+      downloads: 19823,
+      rating: 4.9,
+      image: "https://cdn.poehali.dev/projects/771a388d-7f14-499e-8687-bc465eed70b9/files/3583e678-bfd7-4f5e-bfbd-1abc5010a1a8.jpg",
+      category: "Графика"
+    }
+  ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [gamesData, modsData, achievementsData] = await Promise.all([
-          api.games.getAll(),
-          api.mods.getAll({ sort: 'downloads', limit: 8 }),
-          api.achievements.getAll()
-        ]);
-        
-        setGames(gamesData.games || []);
-        setMods(modsData.mods || []);
-        setAchievements(achievementsData.achievements || []);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const games = [
+    {
+      title: "Manhunt 2",
+      modsCount: 247,
+      image: "https://cdn.poehali.dev/projects/771a388d-7f14-499e-8687-bc465eed70b9/files/f3031d53-4049-48b5-b7cb-1a2a1ad58edb.jpg"
+    },
+    {
+      title: "Postal 2",
+      modsCount: 189,
+      image: "https://cdn.poehali.dev/projects/771a388d-7f14-499e-8687-bc465eed70b9/files/3583e678-bfd7-4f5e-bfbd-1abc5010a1a8.jpg"
+    },
+    {
+      title: "Max Payne",
+      modsCount: 312,
+      image: "https://cdn.poehali.dev/projects/771a388d-7f14-499e-8687-bc465eed70b9/files/3583e678-bfd7-4f5e-bfbd-1abc5010a1a8.jpg"
+    }
+  ];
 
-    fetchData();
-  }, []);
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <Icon name="Loader2" size={48} className="animate-spin text-primary mx-auto mb-4" />
-          <p className="text-muted-foreground">Загрузка данных...</p>
-        </div>
-      </div>
-    );
-  }
+  const achievements = [
+    { title: "Твой первый мод!", description: "Загрузил свой первый мод на платформу", icon: "Upload", earned: true, earnedDate: "2024-10-15" },
+    { title: "1 год на сайте", description: "Проведи год в нашем сообществе", icon: "Calendar", earned: true, earnedDate: "2024-01-01" },
+    { title: "Популярный автор", description: "Набери 10,000 скачиваний", icon: "TrendingUp", earned: false },
+    { title: "Коллекционер", description: "Скачай 50 модов", icon: "Package", earned: true, earnedDate: "2024-09-20" },
+    { title: "Мастер-моддер", description: "Загрузи 10 модов", icon: "Award", earned: false },
+    { title: "5 звезд", description: "Получи рейтинг 5.0 на мод", icon: "Star", earned: false }
+  ];
 
-  const totalDownloads = mods.reduce((sum, mod) => sum + mod.downloads_count, 0);
   const stats = [
-    { label: "Всего модов", value: mods.length.toString(), icon: "Package", color: "text-primary" },
-    { label: "Активных пользователей", value: "0", icon: "Users", color: "text-secondary" },
-    { label: "Скачиваний", value: totalDownloads.toLocaleString(), icon: "Download", color: "text-accent" },
-    { label: "Игр", value: games.length.toString(), icon: "Gamepad2", color: "text-primary" }
+    { label: "Всего модов", value: "1,247", icon: "Package", color: "text-primary" },
+    { label: "Активных пользователей", value: "8,432", icon: "Users", color: "text-secondary" },
+    { label: "Скачиваний", value: "127K", icon: "Download", color: "text-accent" },
+    { label: "Игр", value: "23", icon: "Gamepad2", color: "text-primary" }
   ];
 
   return (
@@ -111,51 +137,21 @@ export default function Index() {
           
           <TabsContent value="featured" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {mods.length > 0 ? (
-                mods.slice(0, 8).map((mod, index) => (
-                  <div key={mod.id} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <ModCard 
-                      title={mod.title}
-                      game={mod.game_title}
-                      author={mod.author_username}
-                      downloads={mod.downloads_count}
-                      rating={parseFloat(mod.rating.toString())}
-                      image={mod.image_url || 'https://cdn.poehali.dev/projects/771a388d-7f14-499e-8687-bc465eed70b9/files/f3031d53-4049-48b5-b7cb-1a2a1ad58edb.jpg'}
-                      category={mod.category}
-                    />
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-full text-center py-12 text-muted-foreground">
-                  <Icon name="Package" size={48} className="mx-auto mb-4 opacity-50" />
-                  <p>Пока нет модов. Будь первым!</p>
+              {featuredMods.map((mod, index) => (
+                <div key={index} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <ModCard {...mod} />
                 </div>
-              )}
+              ))}
             </div>
           </TabsContent>
           
           <TabsContent value="new" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {mods.length > 0 ? (
-                mods.slice().reverse().slice(0, 8).map((mod, index) => (
-                  <div key={mod.id} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <ModCard 
-                      title={mod.title}
-                      game={mod.game_title}
-                      author={mod.author_username}
-                      downloads={mod.downloads_count}
-                      rating={parseFloat(mod.rating.toString())}
-                      image={mod.image_url || 'https://cdn.poehali.dev/projects/771a388d-7f14-499e-8687-bc465eed70b9/files/f3031d53-4049-48b5-b7cb-1a2a1ad58edb.jpg'}
-                      category={mod.category}
-                    />
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-full text-center py-12 text-muted-foreground">
-                  <Icon name="Package" size={48} className="mx-auto mb-4 opacity-50" />
-                  <p>Пока нет модов. Будь первым!</p>
+              {featuredMods.slice().reverse().map((mod, index) => (
+                <div key={index} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <ModCard {...mod} />
                 </div>
-              )}
+              ))}
             </div>
           </TabsContent>
         </Tabs>
@@ -169,22 +165,11 @@ export default function Index() {
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {games.length > 0 ? (
-              games.map((game, index) => (
-                <div key={game.id} className="animate-fade-in" style={{ animationDelay: `${index * 0.15}s` }}>
-                  <GameCard 
-                    title={game.title}
-                    modsCount={game.mods_count}
-                    image={game.image_url}
-                  />
-                </div>
-              ))
-            ) : (
-              <div className="col-span-full text-center py-12 text-muted-foreground">
-                <Icon name="Gamepad2" size={48} className="mx-auto mb-4 opacity-50" />
-                <p>Игры загружаются...</p>
+            {games.map((game, index) => (
+              <div key={index} className="animate-fade-in" style={{ animationDelay: `${index * 0.15}s` }}>
+                <GameCard {...game} />
               </div>
-            )}
+            ))}
           </div>
         </section>
 
@@ -198,24 +183,11 @@ export default function Index() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                {achievements.length > 0 ? (
-                  achievements.map((achievement, index) => (
-                    <div key={achievement.id} className="animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                      <AchievementBadge 
-                        title={achievement.title}
-                        description={achievement.description}
-                        icon={achievement.icon}
-                        earned={achievement.earned || false}
-                        earnedDate={achievement.earned_at}
-                      />
-                    </div>
-                  ))
-                ) : (
-                  <div className="col-span-full text-center py-8 text-muted-foreground">
-                    <Icon name="Trophy" size={48} className="mx-auto mb-4 opacity-50" />
-                    <p>Достижения загружаются...</p>
+                {achievements.map((achievement, index) => (
+                  <div key={index} className="animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <AchievementBadge {...achievement} />
                   </div>
-                )}
+                ))}
               </div>
             </CardContent>
           </Card>
