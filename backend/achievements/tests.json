@@ -1,0 +1,13 @@
+{
+  "tests": [
+    {
+      "name": "Get all achievements",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "achievements": "array"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

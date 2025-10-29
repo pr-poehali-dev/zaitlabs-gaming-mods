@@ -1,0 +1,13 @@
+{
+  "tests": [
+    {
+      "name": "Get all games with mods count",
+      "method": "GET",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "games": "array"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
